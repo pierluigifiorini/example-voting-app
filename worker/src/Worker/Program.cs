@@ -104,8 +104,11 @@ namespace Worker
 
         private static ConnectionMultiplexer OpenRedisConnection(string hostname)
         {
+            var redisPassword = Environment.GetEnvironmentVariable("REDIS_PASSWORD") ?? "redis";
+
             // Use IP address to workaround https://github.com/StackExchange/StackExchange.Redis/issues/410
             var ipAddress = GetIp(hostname);
+            ipAddress += ",password=" + redisPassword;
             Console.WriteLine($"Found redis at {ipAddress}");
 
             while (true)
